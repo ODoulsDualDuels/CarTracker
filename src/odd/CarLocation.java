@@ -12,10 +12,27 @@ public class CarLocation {
     private double y;
     private double theta;
 
+    private long timestamp;
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public CarLocation(double x, double y, double theta) {
         this.x = x;
         this.y = y;
         this.theta = theta;
+        this.timestamp = System.currentTimeMillis();
+    }
+    public CarLocation(double x, double y, double theta, long timestamp) {
+        this.x = x;
+        this.y = y;
+        this.theta = theta;
+        this.timestamp = timestamp;
     }
 
     public double getTheta() {

@@ -34,7 +34,9 @@ public class CarDetector {
 
     Matrix affine;
 
-    TrackerServer trackerServer;
+    PositionStream positionStream;
+
+    private long lastMessage = 0;
 
     public CarDetector(ImageSource is, Matrix affine) {
         this.is = is;
@@ -42,7 +44,8 @@ public class CarDetector {
         GOOD_IDS.add(0);
         GOOD_IDS.add(1);
 
-        trackerServer = new TrackerServer();
+        positionStream = new PositionStream(1000/15);
+        positionStream.start();
 
         this.tf = (TagFamily) ReflectUtil.createObject(TAG_FAMILY);
 
@@ -54,6 +57,7 @@ public class CarDetector {
     public void startDetecting(long pauseMillis) {
 
         while (true) {
+//            long startTime = System.currentTimeMillis();
             FrameData frmd = is.getFrame();
             if (frmd == null)
                 continue;
@@ -75,25 +79,28 @@ public class CarDetector {
                 double offsetY = topRight[1] - topLeft[1];
 
                 double theta = Math.atan2(offsetY, offsetX);
-//                System.out.println("theta: " + (theta * (180 / Math.PI)));
 
                 //center of tag
                 double center[] = d.cxy;
                 double centerRealWord[] = convertToRealWorld(center);
 
                 CarLocation cl = new CarLocation(centerRealWord[0], centerRealWord[1], theta);
-                trackerServer.sendLocation(cl);
+//                System.out.println("time since last message: " + (System.currentTimeMillis() - lastMessage));
+//                lastMessage = System.currentTimeMillis();
+
+                positionStream.setPosition(cl);
 
 //                System.out.println("x: " + centerRealWord[0] + ", y: " + centerRealWord[1]);
 
             }
-            try {
-                Thread.sleep(pauseMillis);
-            }
-            catch (InterruptedException ie) {
-                System.out.println("TOO MUCH COFFEE!!!!");
-                ie.printStackTrace();
-            }
+//            System.out.println("time for loop: " + (System.currentTimeMillis() - startTime));
+//            try {
+//                Thread.sleep(pauseMillis);
+//            }
+//            catch (InterruptedException ie) {
+//                System.out.println("TOO MUCH COFFEE!!!!");
+//                ie.printStackTrace();
+//            }
         }
 
     }
