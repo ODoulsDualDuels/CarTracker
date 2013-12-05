@@ -14,7 +14,8 @@ public class CarTracker {
 
     public static void main(String[] args) {
 
-        String url = ImageSource.getCameraURLs().get(0);
+//        String url = ImageSource.getCameraURLs().get(0);
+        String url = "v4l2:///dev/video2?fidx=2";
         ImageSource is = null;
         try {
             is = ImageSource.make(url);

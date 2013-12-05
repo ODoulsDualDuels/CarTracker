@@ -77,6 +77,7 @@ public class CarDetector {
                 //center of tag
                 double center[] = d.cxy;
                 double centerRealWord[] = convertToRealWorld(center);
+                System.out.println("x: " + centerRealWord[0] + ", y: " + centerRealWord[1]);
 
             }
             try {

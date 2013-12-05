@@ -89,9 +89,11 @@ public class CamCalibrater {
         }
         //TODO: CHANGE THIS
         double calLen = 12d * .0254;
+        double x = 25d;
+        double y = 18d;
         Matrix a = new Matrix(a_raw);
         double [][] b_raw = new double[8][1];
-        double [] b_col = {0, calLen, calLen, 0, 0, (calLen * -1), (calLen * -1), 0};
+        double [] b_col = {0, y, x, 0, 0, (y * -1), (x * -1), 0};
         for (int i = 0; i < b_col.length; i++) {
             b_raw[i][0] = b_col[i];
         }
