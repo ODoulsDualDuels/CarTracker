@@ -15,7 +15,7 @@ public class CarTracker {
     public static void main(String[] args) {
 
 //        String url = ImageSource.getCameraURLs().get(0);
-        String url = "v4l2:///dev/video2?fidx=2";
+        String url = "v4l2:///dev/video1?fidx=2";
         ImageSource is = null;
         try {
             is = ImageSource.make(url);
@@ -30,7 +30,7 @@ public class CarTracker {
             CamCalibrater cc = new CamCalibrater(is);
             //get affine transformation matrix from calibrated camera
             Matrix affine = cc.getAffine();
-            System.out.println(affine.toString());
+            //System.out.println(affine.toString());
             //begin detecting cars
             CarDetector carDetector = new CarDetector(is, affine);
             carDetector.startDetecting(0);

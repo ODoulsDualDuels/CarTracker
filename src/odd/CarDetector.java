@@ -34,11 +34,15 @@ public class CarDetector {
 
     Matrix affine;
 
+    TrackerServer trackerServer;
+
     public CarDetector(ImageSource is, Matrix affine) {
         this.is = is;
         this.affine = affine;
         GOOD_IDS.add(0);
         GOOD_IDS.add(1);
+
+        trackerServer = new TrackerServer();
 
         this.tf = (TagFamily) ReflectUtil.createObject(TAG_FAMILY);
 
@@ -71,13 +75,16 @@ public class CarDetector {
                 double offsetY = topRight[1] - topLeft[1];
 
                 double theta = Math.atan2(offsetY, offsetX);
-                System.out.println("theta: " + (theta * (180 / Math.PI)));
-//                System.out.println("center: (" + centerRealWord[0] + ", " + centerRealWord[1] + ")");
+//                System.out.println("theta: " + (theta * (180 / Math.PI)));
 
                 //center of tag
                 double center[] = d.cxy;
                 double centerRealWord[] = convertToRealWorld(center);
-                System.out.println("x: " + centerRealWord[0] + ", y: " + centerRealWord[1]);
+
+                CarLocation cl = new CarLocation(centerRealWord[0], centerRealWord[1], theta);
+                trackerServer.sendLocation(cl);
+
+//                System.out.println("x: " + centerRealWord[0] + ", y: " + centerRealWord[1]);
 
             }
             try {
