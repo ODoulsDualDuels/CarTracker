@@ -87,8 +87,6 @@ public class CamCalibrater {
                 a_raw[i][5] = 1;
             }
         }
-        //TODO: CHANGE THIS
-        double calLen = 12d * .0254;
         double x = 25d;
         double y = 18d;
         Matrix a = new Matrix(a_raw);

@@ -3,6 +3,8 @@ package odd;
 import april.jcam.ImageSource;
 import april.jmat.Matrix;
 
+import java.util.ArrayList;
+
 /**
  * Created with IntelliJ IDEA.
  * User: max
@@ -13,8 +15,14 @@ import april.jmat.Matrix;
 public class CarTracker {
 
     public static void main(String[] args) {
-
-        String url = ImageSource.getCameraURLs().get(0);
+        ArrayList<String> urls = ImageSource.getCameraURLs();
+        String url;
+        if (urls.size() > 1) {
+            url = urls.get(1);
+        }
+        else {
+            url = urls.get(0);
+        }
 //        String url = "v4l2:///dev/video1?fidx=2";
         ImageSource is = null;
         try {

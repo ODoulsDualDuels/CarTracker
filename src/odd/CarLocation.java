@@ -8,8 +8,29 @@ package odd;
  * To change this template use File | Settings | File Templates.
  */
 public class CarLocation {
+    public int getCarId() {
+        return carId;
+    }
+
+    public void setCarId(int carId) {
+        this.carId = carId;
+    }
+
+    private int carId;
     private double x;
     private double y;
+
+    @Override
+    public String toString() {
+        return "CarLocation{" +
+                "carId=" + carId +
+                ", x=" + x +
+                ", y=" + y +
+                ", theta=" + theta +
+                ", timestamp=" + timestamp +
+                '}';
+    }
+
     private double theta;
 
     private long timestamp;
@@ -22,13 +43,15 @@ public class CarLocation {
         this.timestamp = timestamp;
     }
 
-    public CarLocation(double x, double y, double theta) {
+    public CarLocation(int id, double x, double y, double theta) {
+        this.carId = id;
         this.x = x;
         this.y = y;
         this.theta = theta;
         this.timestamp = System.currentTimeMillis();
     }
-    public CarLocation(double x, double y, double theta, long timestamp) {
+    public CarLocation(int id, double x, double y, double theta, long timestamp) {
+        this.carId = id;
         this.x = x;
         this.y = y;
         this.theta = theta;

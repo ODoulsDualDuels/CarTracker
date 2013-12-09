@@ -34,9 +34,7 @@ public class CarDetector {
 
     Matrix affine;
 
-    PositionStream positionStream;
-
-    private long lastMessage = 0;
+    TrackerServer server;
 
     public CarDetector(ImageSource is, Matrix affine) {
         this.is = is;
@@ -44,8 +42,7 @@ public class CarDetector {
         GOOD_IDS.add(0);
         GOOD_IDS.add(1);
 
-        positionStream = new PositionStream(1000/15);
-        positionStream.start();
+        server = new TrackerServer();
 
         this.tf = (TagFamily) ReflectUtil.createObject(TAG_FAMILY);
 
@@ -57,7 +54,6 @@ public class CarDetector {
     public void startDetecting(long pauseMillis) {
 
         while (true) {
-//            long startTime = System.currentTimeMillis();
             FrameData frmd = is.getFrame();
             if (frmd == null)
                 continue;
@@ -84,23 +80,10 @@ public class CarDetector {
                 double center[] = d.cxy;
                 double centerRealWord[] = convertToRealWorld(center);
 
-                CarLocation cl = new CarLocation(centerRealWord[0], centerRealWord[1], theta);
-//                System.out.println("time since last message: " + (System.currentTimeMillis() - lastMessage));
-//                lastMessage = System.currentTimeMillis();
-
-                positionStream.setPosition(cl);
-
-//                System.out.println("x: " + centerRealWord[0] + ", y: " + centerRealWord[1]);
+                CarLocation cl = new CarLocation(d.id, centerRealWord[0], centerRealWord[1], theta);
+                server.sendLocation(cl);
 
             }
-//            System.out.println("time for loop: " + (System.currentTimeMillis() - startTime));
-//            try {
-//                Thread.sleep(pauseMillis);
-//            }
-//            catch (InterruptedException ie) {
-//                System.out.println("TOO MUCH COFFEE!!!!");
-//                ie.printStackTrace();
-//            }
         }
 
     }
